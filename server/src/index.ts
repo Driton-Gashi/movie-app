@@ -1,42 +1,71 @@
 import cors from 'cors';
 import express from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { env } from './config/env';
+import { errorHandler } from './middleware/errorHandler';
+import { notFoundHandler } from './middleware/notFound';
+import { logger } from './utils/logger';
+import cimerRoutes from './routes/route-example';
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:3000'];
+// CORS configuration
+const allowedOrigins =
+  env.nodeEnv === 'production'
+    ? [process.env.CLIENT_URL || 'http://localhost:3000']
+    : ['http://localhost:3000', 'http://localhost:3001'];
 
 app.use(
-   cors({
-      origin: allowedOrigins,
-      credentials: true,
-   }),
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
 );
 
+// Body parsing middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-   const baseUrl = `${req.protocol}://${req.get('host')}`;
-
-   res.status(200).json({
-      message: 'Welcome to the Tratics API',
-      docs: `${baseUrl}/docs`,
-   });
+// Health check endpoint
+app.get('/health', (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Server is healthy',
+    timestamp: new Date().toISOString(),
+  });
 });
 
-app.get('/docs', (req, res) => {
-   const baseUrl = `${req.protocol}://${req.get('host')}`;
+// API routes
+app.get('/', (_req, res) => {
+  const baseUrl = `${_req.protocol}://${_req.get('host')}`;
 
-   res.status(200).json({
-     message: "Hello World"
-   });
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to the Tratics API',
+    version: '1.0.0',
+    docs: `${baseUrl}/docs`,
+    health: `${baseUrl}/health`,
+  });
 });
 
+// Example route (replace with actual routes)
+app.use('/api/cimerat', cimerRoutes);
 
-const PORT = Number(process.env.PORT) || 4000;
+// 404 handler
+app.use(notFoundHandler);
+
+// Error handler (must be last)
+app.use(errorHandler);
+
+const PORT = env.port;
 
 app.listen(PORT, () => {
-   console.log(`🚀 Server running on port ${PORT}`);
+  logger.info(`🚀 Server running on port ${PORT}`);
+  logger.info(`📝 Environment: ${env.nodeEnv}`);
+  logger.info(`🌐 Health check: http://localhost:${PORT}/health`);
 });
