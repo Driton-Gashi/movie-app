@@ -12,21 +12,55 @@ export type MovieCardData = {
 
 function RatingPill({ rating }: { rating: number }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-2.5 py-1 text-xs font-semibold text-slate-900">
+    <span className="inline-flex items-center rounded-full border border-black/10 bg-white/80 px-2.5 py-1 text-xs font-semibold text-slate-900">
       {rating.toFixed(1)}
     </span>
   );
 }
 
+function PosterFallback({ title }: { title: string }) {
+  const initials =
+    title
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(w => w[0]?.toUpperCase())
+      .join('') || 'M';
+
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-slate-100">
+      <div className="flex flex-col items-center gap-2">
+        <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-sm font-bold text-white">
+          {initials}
+        </div>
+        <div className="px-4 text-center text-xs text-slate-500">No poster</div>
+      </div>
+    </div>
+  );
+}
+
 export default function MovieCard({ movie }: { movie: MovieCardData }) {
+  const poster = typeof movie.posterUrl === 'string' ? movie.posterUrl.trim() : '';
+
   return (
     <Link
       href={`/movies/${movie.slug}`}
       className="group overflow-hidden rounded-2xl border border-black/10 bg-white transition hover:bg-slate-50"
     >
       <div className="relative aspect-[16/10] w-full bg-slate-100">
-        {/* Replace with next/image later */}
-        <div className="flex h-full items-center justify-center text-xs text-slate-500">Poster</div>
+        {poster ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={poster}
+            alt={movie.title}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        ) : (
+          <PosterFallback title={movie.title} />
+        )}
 
         {typeof movie.rating === 'number' && (
           <div className="absolute left-3 top-3">

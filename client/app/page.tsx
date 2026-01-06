@@ -71,10 +71,10 @@ export default function HomePage() {
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Your personal library
             </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-              Track what you watch. Discover what’s next.
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+              Track what you watch. Discover what's next.
             </h1>
-            <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+            <p className="mt-3 text-sm leading-6 text-slate-600">
               Browse movies and series, build your watchlist, save favorites, and keep everything
               organized in one place.
             </p>

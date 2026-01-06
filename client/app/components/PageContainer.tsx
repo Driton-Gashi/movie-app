@@ -19,11 +19,13 @@ export default function PageContainer({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             {title && (
-              <h1 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
+              <h1 className="text-xl font-semibold tracking-tight text-slate-900">
                 {title}
               </h1>
             )}
-            {description && <p className="text-sm text-slate-600">{description}</p>}
+            {description && (
+              <p className="text-sm text-slate-600">{description}</p>
+            )}
           </div>
 
           {rightSlot && <div className="shrink-0">{rightSlot}</div>}
