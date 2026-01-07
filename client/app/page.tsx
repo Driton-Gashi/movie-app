@@ -5,8 +5,8 @@ type FeaturedItem = {
   title: string;
   year: number;
   type: 'Movie' | 'Series';
-  rating: number; // 0-10
-  poster: string; // placeholder (replace later)
+  rating: number;
+  poster: string;
   href: string;
 };
 

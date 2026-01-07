@@ -1,7 +1,4 @@
-// src/lib/wp.ts
-
 const WP_BASE_URL = process.env.NEXT_PUBLIC_WP_BASE_URL;
-const WP_MOVIE_REST_BASE = process.env.NEXT_PUBLIC_WP_MOVIE_REST_BASE ?? 'movies';
 
 if (!WP_BASE_URL) {
   throw new Error('NEXT_PUBLIC_WP_BASE_URL environment variable is required');
@@ -102,7 +99,7 @@ export function getRating(movie: WPMovie): number | undefined {
 }
 
 function buildMoviesUrl(params?: FetchMoviesParams): URL {
-  const url = new URL(`${WP_BASE_URL}/wp-json/wp/v2/${WP_MOVIE_REST_BASE}`);
+  const url = new URL(`${WP_BASE_URL}/wp-json/wp/v2/movies`);
 
   // Embedded resources: featured images + terms
   url.searchParams.set('_embed', '1');
@@ -139,7 +136,7 @@ export function getFeaturedImageUrl(movie: WPMovie): string | null {
 }
 
 export async function wpFetchMovies(params?: { q?: string; page?: number; perPage?: number }) {
-  const url = new URL(`${WP_BASE_URL}/wp-json/wp/v2/${WP_MOVIE_REST_BASE}`);
+  const url = new URL(`${WP_BASE_URL}/wp-json/wp/v2/movies`);
 
   url.searchParams.set('_embed', '1');
   url.searchParams.set('per_page', String(params?.perPage ?? 12));
@@ -193,7 +190,9 @@ export type WPMovieDetails = Omit<WPMovie, 'acf'> & {
   };
 };
 
-export async function wpFetchMovieBySlug(slug: string | undefined | null): Promise<WPMovieDetails | null> {
+export async function wpFetchMovieBySlug(
+  slug: string | undefined | null
+): Promise<WPMovieDetails | null> {
   if (!slug || typeof slug !== 'string') {
     return null;
   }
@@ -203,8 +202,7 @@ export async function wpFetchMovieBySlug(slug: string | undefined | null): Promi
     return null;
   }
 
-  // Hard safety: ensure we are calling the correct endpoint
-  const base = `${WP_BASE_URL}/wp-json/wp/v2/${WP_MOVIE_REST_BASE}`;
+  const base = `${WP_BASE_URL}/wp-json/wp/v2/movies`;
   const url = new URL(base);
 
   url.searchParams.set('slug', cleanSlug);

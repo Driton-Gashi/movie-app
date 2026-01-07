@@ -5,7 +5,7 @@ export type MovieCardData = {
   slug: string;
   title: string;
   year: number;
-  rating?: number; // 0-10
+  rating?: number;
   posterUrl?: string | null;
   genres?: string[];
 };
