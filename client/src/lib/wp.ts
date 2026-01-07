@@ -49,24 +49,24 @@ export type WPMoviesResponse = {
   totalPages: number;
 };
 
-type FetchMoviesParams = {
-  q?: string;
-  page?: number;
-  perPage?: number;
-};
+// type FetchMoviesParams = {
+//   q?: string;
+//   page?: number;
+//   perPage?: number;
+// };
 
 function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '').trim();
 }
 
-function safeTrim(value: string | undefined | null): string {
-  return typeof value === 'string' ? value.trim() : '';
-}
+// function safeTrim(value: string | undefined | null): string {
+//   return typeof value === 'string' ? value.trim() : '';
+// }
 
-function toNumber(value: string | null, fallback = 0): number {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : fallback;
-}
+// function toNumber(value: string | null, fallback = 0): number {
+//   const n = Number(value);
+//   return Number.isFinite(n) ? n : fallback;
+// }
 
 export function getExcerptText(movie: WPMovie): string {
   return stripHtml(movie.excerpt?.rendered ?? '');
@@ -98,27 +98,27 @@ export function getRating(movie: WPMovie): number | undefined {
   return rating;
 }
 
-function buildMoviesUrl(params?: FetchMoviesParams): URL {
-  const url = new URL(`${WP_BASE_URL}/wp-json/wp/v2/movies`);
+// function buildMoviesUrl(params?: FetchMoviesParams): URL {
+//   const url = new URL(`${WP_BASE_URL}/wp-json/wp/v2/movies`);
 
-  // Embedded resources: featured images + terms
-  url.searchParams.set('_embed', '1');
+//   // Embedded resources: featured images + terms
+//   url.searchParams.set('_embed', '1');
 
-  // Pagination
-  const perPage = params?.perPage ?? 12;
-  const page = params?.page ?? 1;
-  url.searchParams.set('per_page', String(perPage));
-  url.searchParams.set('page', String(page));
+//   // Pagination
+//   const perPage = params?.perPage ?? 12;
+//   const page = params?.page ?? 1;
+//   url.searchParams.set('per_page', String(perPage));
+//   url.searchParams.set('page', String(page));
 
-  // Search
-  const q = safeTrim(params?.q);
-  if (q) url.searchParams.set('search', q);
+//   // Search
+//   const q = safeTrim(params?.q);
+//   if (q) url.searchParams.set('search', q);
 
-  // Reduce payload
-  url.searchParams.set('_fields', 'id,slug,title,excerpt,acf,featured_media,_embedded');
+//   // Reduce payload
+//   url.searchParams.set('_fields', 'id,slug,title,excerpt,acf,featured_media,_embedded');
 
-  return url;
-}
+//   return url;
+// }
 
 export function getFeaturedImageUrl(movie: WPMovie): string | null {
   const media = movie._embedded?.['wp:featuredmedia']?.[0];

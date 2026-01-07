@@ -19,15 +19,15 @@ export default async function MoviesPage({ searchParams }: { searchParams?: Movi
     perPage,
   });
 
-   const movies: MovieCardData[] = result.data.map(movie => ({
-     id: movie.id,
-     slug: movie.slug,
-     title: movie.title?.rendered ?? 'Untitled',
-     year: getReleaseYear(movie),
-     rating: getRating(movie),
-     posterUrl: getFeaturedImageUrl(movie),
-     genres: getGenres(movie),
-   }));
+  const movies: MovieCardData[] = result.data.map(movie => ({
+    id: movie.id,
+    slug: movie.slug,
+    title: movie.title?.rendered ?? 'Untitled',
+    year: getReleaseYear(movie),
+    rating: getRating(movie),
+    posterUrl: getFeaturedImageUrl(movie),
+    genres: getGenres(movie),
+  }));
 
   const totalPages = result.totalPages;
 
@@ -65,8 +65,12 @@ export default async function MoviesPage({ searchParams }: { searchParams?: Movi
 
       {movies.length === 0 && (
         <div className="mt-8 rounded-2xl border border-black/10 bg-white p-8 text-center dark:border-white/10 dark:bg-slate-800">
-          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">No movies found</div>
-          <div className="mt-2 text-sm text-slate-600 dark:text-slate-400">Try another search term.</div>
+          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            No movies found
+          </div>
+          <div className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+            Try another search term.
+          </div>
         </div>
       )}
     </PageContainer>
