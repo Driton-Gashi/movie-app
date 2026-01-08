@@ -35,7 +35,14 @@ async function apiRequest<T>(
 
   // If cookies are provided (from server component), include them
   if (options?.cookies) {
-    headers['Cookie'] = options.cookies;
+    // Ensure headers is a plain object to allow setting 'Cookie'
+    if (headers instanceof Headers) {
+      headers.append('Cookie', options.cookies);
+    } else if (Array.isArray(headers)) {
+      headers.push(['Cookie', options.cookies]);
+    } else {
+      (headers as Record<string, string>)['Cookie'] = options.cookies;
+    }
   }
 
   const response = await fetch(`${API_URL}${API_PATH}${endpoint}`, {

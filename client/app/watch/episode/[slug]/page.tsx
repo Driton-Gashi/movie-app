@@ -6,7 +6,6 @@ import ListToggleButton from '@/components/ListToggleButton';
 import {
   wpFetchEpisodes,
   wpFetchSeriesById,
-  getPosterUrl,
   getTitleText,
   getPosterUrl as getEpisodePosterUrl,
 } from '@/lib/wp';
@@ -82,9 +81,7 @@ export default async function EpisodeWatchPage({ params }: { params: Promise<{ s
                     Season {season} • Episode {episodeNum}
                   </div>
                 )}
-                {runtime && (
-                  <div className="text-slate-600 dark:text-slate-400">{runtime} min</div>
-                )}
+                {runtime && <div className="text-slate-600 dark:text-slate-400">{runtime} min</div>}
                 {airDate && (
                   <div className="text-slate-600 dark:text-slate-400">
                     {airDate.length === 8
