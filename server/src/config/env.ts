@@ -17,13 +17,7 @@ interface EnvConfig {
   clientUrls: string[];
 }
 
-const requiredEnvVars = [
-  'DB_HOST',
-  'DB_USER',
-  'DB_PASSWORD',
-  'DB_NAME',
-  'JWT_SECRET',
-] as const;
+const requiredEnvVars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME', 'JWT_SECRET'] as const;
 
 function validateEnv(): void {
   const missing = requiredEnvVars.filter(key => !process.env[key]);

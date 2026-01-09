@@ -83,9 +83,7 @@ export default function UsersTable({ initialData }: UsersTableProps) {
       setSavingUserId(userId);
       setActionError(null);
       const updatedUser = await adminApi.updateUser(userId, updates);
-      setUsers(current =>
-        current.map(user => (user.id === userId ? updatedUser : user))
-      );
+      setUsers(current => current.map(user => (user.id === userId ? updatedUser : user)));
       setEditingUserId(null);
     } catch (error) {
       setActionError(error instanceof Error ? error.message : 'Failed to update user.');
@@ -117,17 +115,13 @@ export default function UsersTable({ initialData }: UsersTableProps) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="text-sm text-slate-500 dark:text-slate-400">
-            Total: {total} users
-          </div>
+          <div className="text-sm text-slate-500 dark:text-slate-400">Total: {total} users</div>
           <div className="text-sm text-slate-500 dark:text-slate-400">
             Page {initialData.page} of {initialData.total_pages}
           </div>
         </div>
         {actionError && (
-          <div className="text-sm font-medium text-rose-600 dark:text-rose-400">
-            {actionError}
-          </div>
+          <div className="text-sm font-medium text-rose-600 dark:text-rose-400">{actionError}</div>
         )}
       </div>
 
@@ -163,10 +157,7 @@ export default function UsersTable({ initialData }: UsersTableProps) {
                 const isDeleting = deletingUserId === user.id;
 
                 return (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-700/50"
-                  >
+                  <tr key={user.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                     <td className="px-4 py-3 text-sm text-slate-900 dark:text-slate-100">
                       {user.id}
                     </td>

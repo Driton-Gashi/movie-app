@@ -8,7 +8,12 @@ type HorizontalRowProps = {
   emptyMessage?: string;
 };
 
-export default function HorizontalRow({ title, seeAllHref, items, emptyMessage }: HorizontalRowProps) {
+export default function HorizontalRow({
+  title,
+  seeAllHref,
+  items,
+  emptyMessage,
+}: HorizontalRowProps) {
   if (items.length === 0) {
     return emptyMessage ? (
       <section className="space-y-4">

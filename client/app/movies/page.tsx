@@ -92,7 +92,11 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
 
       <div className="mt-8 flex items-center justify-between">
         <Link
-          href={buildMoviesHref({ q: searchQuery, page: Math.max(1, currentPage - 1), genre: genreId })}
+          href={buildMoviesHref({
+            q: searchQuery,
+            page: Math.max(1, currentPage - 1),
+            genre: genreId,
+          })}
           className={getPaginationButtonClass(currentPage <= 1)}
         >
           Previous

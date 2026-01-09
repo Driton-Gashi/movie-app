@@ -254,19 +254,15 @@ export class AdminService {
   }
 
   async deleteUser(userId: number): Promise<boolean> {
-    const [result] = await pool.execute<mysql2.ResultSetHeader>(
-      'DELETE FROM users WHERE id = ?',
-      [userId]
-    );
+    const [result] = await pool.execute<mysql2.ResultSetHeader>('DELETE FROM users WHERE id = ?', [
+      userId,
+    ]);
 
     return result.affectedRows > 0;
   }
 
   async getDashboardStats(): Promise<DashboardStats> {
-    const [userStats, viewStats] = await Promise.all([
-      this.getUserStats(),
-      this.getViewStats(),
-    ]);
+    const [userStats, viewStats] = await Promise.all([this.getUserStats(), this.getViewStats()]);
 
     const [listStats] = await pool.execute<mysql2.RowDataPacket[]>(
       `SELECT 

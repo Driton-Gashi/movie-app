@@ -128,9 +128,9 @@ export function getTrailerUrl(item: { acf?: { trailer_url?: string } }): string 
   return url ? url : null;
 }
 
-export function getStreamType(
-  item: { acf?: { stream_type?: string } }
-): 'iframe' | 'external' | 'none' {
+export function getStreamType(item: {
+  acf?: { stream_type?: string };
+}): 'iframe' | 'external' | 'none' {
   const t = item.acf?.stream_type;
   if (t === 'iframe' || t === 'external') return t;
   return 'none';
@@ -147,7 +147,8 @@ export function getStreamIframe(item: { acf?: { stream_iframe?: string } }): str
 }
 
 export function getStreamProvider(item: { acf?: { stream_provider?: string } }): string | null {
-  const provider = typeof item.acf?.stream_provider === 'string' ? item.acf.stream_provider.trim() : '';
+  const provider =
+    typeof item.acf?.stream_provider === 'string' ? item.acf.stream_provider.trim() : '';
   return provider ? provider : null;
 }
 

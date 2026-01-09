@@ -13,9 +13,8 @@ export default async function AdminDashboardPage() {
     .join('; ');
 
   // Check if user is authenticated and is admin
-  let profile;
   try {
-    profile = await meApi.getProfile(cookieHeader);
+    await meApi.getProfile(cookieHeader);
   } catch (error) {
     redirect('/login');
   }
@@ -230,15 +229,7 @@ export default async function AdminDashboardPage() {
   );
 }
 
-function StatCard({
-  title,
-  value,
-  subtitle,
-}: {
-  title: string;
-  value: number;
-  subtitle?: string;
-}) {
+function StatCard({ title, value, subtitle }: { title: string; value: number; subtitle?: string }) {
   return (
     <div className="rounded-2xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-slate-800">
       <div className="text-xs font-medium text-slate-500 dark:text-slate-400">{title}</div>

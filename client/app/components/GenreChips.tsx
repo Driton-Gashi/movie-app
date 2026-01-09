@@ -13,7 +13,9 @@ export default function GenreChips({ genres }: GenreChipsProps) {
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Browse by Genre</h2>
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+          Browse by Genre
+        </h2>
         <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
           Discover content by category
         </p>

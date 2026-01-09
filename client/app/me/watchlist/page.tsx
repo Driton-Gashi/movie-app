@@ -35,9 +35,7 @@ async function fetchListItems(listRows: Array<{ item_type: string; wp_post_id: n
           perPage: 100,
         })
       : Promise.resolve({ data: [] as WPSeries[], totalPages: 0 }),
-    episodes.length > 0
-      ? wpFetchEpisodes()
-      : Promise.resolve([] as WPEpisode[]),
+    episodes.length > 0 ? wpFetchEpisodes() : Promise.resolve([] as WPEpisode[]),
   ]);
 
   // Filter to only items in the list
@@ -91,12 +89,8 @@ export default async function WatchlistPage() {
   const { filteredMovies, filteredSeries, filteredEpisodes } = await fetchListItems(listRows);
 
   // Fetch posters
-  const moviePosters = await Promise.all(
-    filteredMovies.map(m => getPosterUrl(m.featured_media))
-  );
-  const seriesPosters = await Promise.all(
-    filteredSeries.map(s => getPosterUrl(s.featured_media))
-  );
+  const moviePosters = await Promise.all(filteredMovies.map(m => getPosterUrl(m.featured_media)));
+  const seriesPosters = await Promise.all(filteredSeries.map(s => getPosterUrl(s.featured_media)));
 
   const movieCards: MovieCardData[] = filteredMovies.map((m, i) => ({
     id: m.id,
