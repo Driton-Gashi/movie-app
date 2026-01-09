@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/src/contexts/ThemeProvider';
-import { meApi } from '@/src/lib/api';
+import { useAuth } from '@/src/contexts/AuthProvider';
 
 type HeaderProps = {
   onOpenSidebar: () => void;
@@ -35,72 +35,20 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { theme, toggleTheme } = useTheme();
+  const { isAuthenticated, isAdmin, refreshAuth } = useAuth();
 
-  const [query, setQuery] = useState('');
-  const [isAuthed, setIsAuthed] = useState(false);
+  // Initialize query from URL, but manage it as local state for the input
+  const urlQuery = searchParams?.get('q') ?? '';
+  const [query, setQuery] = useState(urlQuery);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement | null>(null);
-  const isMountedRef = useRef(true);
+  const prevUrlQueryRef = useRef(urlQuery);
 
-  useEffect(() => {
-    const q = searchParams?.get('q') ?? '';
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setQuery(q);
-  }, [searchParams]);
-
-  useEffect(() => {
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
-
-  const applyStoredAuthHint = useCallback(() => {
-    try {
-      const stored = localStorage.getItem('auth-state');
-      if (stored === 'logged-in') setIsAuthed(true);
-      if (stored === 'logged-out') setIsAuthed(false);
-    } catch {
-      // Ignore storage access issues.
-    }
-  }, []);
-
-  const refreshAuthState = useCallback(() => {
-    meApi
-      .getProfile()
-      .then(() => {
-        if (isMountedRef.current) setIsAuthed(true);
-      })
-      .catch(() => {
-        if (isMountedRef.current) setIsAuthed(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    applyStoredAuthHint();
-    refreshAuthState();
-  }, [applyStoredAuthHint, refreshAuthState]);
-
-  useEffect(() => {
-    const onAuthChanged = () => {
-      applyStoredAuthHint();
-      refreshAuthState();
-    };
-    const onStorage = (event: StorageEvent) => {
-      if (event.key === 'auth-state') {
-        applyStoredAuthHint();
-        refreshAuthState();
-      }
-    };
-
-    window.addEventListener('auth-changed', onAuthChanged);
-    window.addEventListener('storage', onStorage);
-
-    return () => {
-      window.removeEventListener('auth-changed', onAuthChanged);
-      window.removeEventListener('storage', onStorage);
-    };
-  }, [refreshAuthState]);
+  // Sync URL query to local state when URL changes externally
+  if (urlQuery !== prevUrlQueryRef.current) {
+    prevUrlQueryRef.current = urlQuery;
+    setQuery(urlQuery);
+  }
 
   useEffect(() => {
     if (!isAccountOpen) return;
@@ -140,17 +88,17 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
         credentials: 'include',
       });
     } catch {
-      // Logout is idempotent; ignore network errors and reset local state.
+      // Logout is idempotent; ignore network errors
     }
 
-    setIsAuthed(false);
     setIsAccountOpen(false);
     try {
       localStorage.setItem('auth-state', 'logged-out');
       window.dispatchEvent(new Event('auth-changed'));
     } catch {
-      // Ignore storage access issues.
+      // Ignore storage access issues
     }
+    refreshAuth();
     router.push('/');
   };
 
@@ -255,7 +203,7 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
           </button>
 
           <div className="hidden items-center gap-2 md:flex">
-            {!isAuthed ? (
+            {!isAuthenticated ? (
               <>
                 <Link
                   href="/login"
@@ -308,6 +256,18 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
                     >
                       Favorites
                     </Link>
+                    {isAdmin && (
+                      <>
+                        <div className="my-2 h-px bg-black/10 dark:bg-white/10" />
+                        <Link
+                          href="/admin"
+                          onClick={() => setIsAccountOpen(false)}
+                          className="block px-4 py-2 text-sm font-medium text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-900/20"
+                        >
+                          Admin Dashboard
+                        </Link>
+                      </>
+                    )}
                     <div className="my-2 h-px bg-black/10 dark:bg-white/10" />
                     <button
                       type="button"

@@ -59,6 +59,14 @@ export default function LoginPage() {
         // Ignore storage access issues.
       }
 
+      // Update auth state in localStorage
+      try {
+        localStorage.setItem('auth-state', 'logged-in');
+        window.dispatchEvent(new Event('auth-changed'));
+      } catch {
+        // Ignore storage errors
+      }
+
       // Redirect to movies page on success
       router.push('/movies');
       router.refresh();
@@ -71,7 +79,10 @@ export default function LoginPage() {
   return (
     <PageContainer title="Login" description="Sign in to your account">
       <div className="mx-auto max-w-md">
-        <form onSubmit={handleSubmit} className="space-y-6 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-slate-800">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-slate-800"
+        >
           {error && (
             <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200">
               {error}
@@ -79,7 +90,10 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Email
             </label>
             <input
@@ -87,7 +101,7 @@ export default function LoginPage() {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-500 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 dark:border-white/10 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-slate-400 dark:focus:ring-slate-400"
               placeholder="you@example.com"
               disabled={isLoading}
@@ -95,7 +109,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Password
             </label>
             <input
@@ -103,7 +120,7 @@ export default function LoginPage() {
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-500 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 dark:border-white/10 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-slate-400 dark:focus:ring-slate-400"
               placeholder="••••••••"
               disabled={isLoading}
@@ -120,7 +137,10 @@ export default function LoginPage() {
 
           <div className="text-center text-sm text-slate-600 dark:text-slate-400">
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="font-medium text-slate-900 hover:underline dark:text-slate-100">
+            <Link
+              href="/register"
+              className="font-medium text-slate-900 hover:underline dark:text-slate-100"
+            >
               Sign up
             </Link>
           </div>

@@ -8,6 +8,8 @@ import cimerRoutes from './routes/route-example';
 import authRoutes from './auth/auth.routes';
 import docsRoutes from './routes/docs.routes';
 import meRoutes from './me/me.routes';
+import adminRoutes from './admin/admin.routes';
+import analyticsRoutes from './analytics/analytics.routes';
 
 const app = express();
 
@@ -66,6 +68,8 @@ app.use('/docs', docsRoutes);
 app.use('/api/cimerat', cimerRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/me', meRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // 404 handler
 app.use(notFoundHandler);

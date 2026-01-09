@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { useAuth } from '@/src/contexts/AuthProvider';
 
 type NavItem = { label: string; href: string };
 type NavGroup = { title: string; items: NavItem[] };
@@ -40,6 +41,7 @@ type SidebarProps = {
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const { isAdmin } = useAuth();
 
   // Close drawer on route change (mobile)
   useEffect(() => {
@@ -103,6 +105,19 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       </nav>
 
       <div className="border-t border-black/10 p-3 dark:border-white/10">
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className={cn(
+              'mb-2 block rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+              isActive(pathname ?? '/', '/admin')
+                ? 'bg-purple-100 text-purple-900 dark:bg-purple-900/30 dark:text-purple-300'
+                : 'text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-900/20'
+            )}
+          >
+            Admin Dashboard
+          </Link>
+        )}
         <Link
           href="/settings"
           className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
