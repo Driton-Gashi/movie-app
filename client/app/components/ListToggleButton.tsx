@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/src/contexts/AuthProvider';
 import { meApi } from '@/src/lib/api';
 
 type ListToggleButtonProps = {
@@ -18,11 +19,18 @@ export default function ListToggleButton({
   wpSlug,
   className = '',
 }: ListToggleButtonProps) {
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [isInList, setIsInList] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isToggling, setIsToggling] = useState(false);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setIsInList(false);
+      setIsLoading(false);
+      return;
+    }
+
     async function checkStatus() {
       try {
         const status = await meApi.checkListStatus(listType, itemType, wpPostId);
@@ -35,7 +43,11 @@ export default function ListToggleButton({
       }
     }
     checkStatus();
-  }, [listType, itemType, wpPostId]);
+  }, [isAuthenticated, listType, itemType, wpPostId]);
+
+  if (isAuthLoading || !isAuthenticated) {
+    return null;
+  }
 
   const handleToggle = async () => {
     setIsToggling(true);

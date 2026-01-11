@@ -114,9 +114,7 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
         method: 'POST',
         credentials: 'include',
       });
-    } catch {
-      // Logout is idempotent; ignore network errors
-    }
+    } catch {}
 
     setIsAccountOpen(false);
     try {
@@ -133,6 +131,8 @@ export default function Header({ onOpenSidebar }: HeaderProps) {
     e.preventDefault();
 
     const trimmed = query.trim();
+    if (trimmed === '') return;
+
     const params = new URLSearchParams();
 
     if (trimmed) {

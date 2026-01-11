@@ -46,7 +46,7 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ s
         {/* Left column: Poster + meta */}
         <div className="space-y-4">
           <div className="overflow-hidden rounded-2xl border border-black/10 bg-white dark:border-white/10 dark:bg-slate-800">
-            <div className="aspect-[2/3] bg-slate-100 dark:bg-slate-800">
+            <div className="aspect-square md:aspect-2/3 bg-slate-100 dark:bg-slate-800">
               {posterUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
