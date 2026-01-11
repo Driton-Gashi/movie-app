@@ -1,23 +1,61 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PageContainer from '@/components/PageContainer';
-import { meApi } from '@/src/lib/api';
+import { meApi, type UserProfile } from '@/src/lib/api';
+import { useAuth } from '@/src/contexts/AuthProvider';
 
-export default async function MePage() {
-  const cookieStore = await cookies();
-  // Convert cookies to header string format
-  const cookieHeader = cookieStore
-    .getAll()
-    .map(cookie => `${cookie.name}=${cookie.value}`)
-    .join('; ');
+export default function MePage() {
+  const router = useRouter();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  let profile;
-  try {
-    profile = await meApi.getProfile(cookieHeader);
-  } catch (error) {
-    // If not authenticated, redirect to login
-    redirect('/login');
+  useEffect(() => {
+    if (isAuthLoading) return;
+    if (!isAuthenticated) {
+      router.replace('/login');
+      return;
+    }
+
+    let isMounted = true;
+
+    const loadProfile = async () => {
+      setIsLoading(true);
+      try {
+        const data = await meApi.getProfile();
+        if (!isMounted) return;
+        setProfile(data);
+      } catch (error) {
+        if (isMounted) {
+          router.replace('/login');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, isAuthLoading, router]);
+
+  if (isAuthLoading || isLoading || !profile) {
+    return (
+      <PageContainer title="My Account" description="Manage your profile and lists">
+        <div className="rounded-2xl border border-black/10 bg-white p-6 text-center dark:border-white/10 dark:bg-slate-800">
+          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            Loading profile...
+          </div>
+        </div>
+      </PageContainer>
+    );
   }
 
   return (
