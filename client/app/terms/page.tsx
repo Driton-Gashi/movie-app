@@ -3,9 +3,9 @@ import PageContainer from '@/components/PageContainer';
 
 const termsSections = [
   {
-    title: 'Using Tratics',
+    title: 'Using Movie App',
     details: [
-      'Tratics is a catalog and discovery experience for movies, series, and episodes.',
+      'Movie App is a catalog and discovery experience for movies, series, and episodes.',
       'You agree to use the service in a lawful and respectful way.',
     ],
   },
@@ -20,7 +20,7 @@ const termsSections = [
     title: 'Content and metadata',
     details: [
       'Catalog information comes from the WordPress API and is shown as provided.',
-      'Tratics does not host streaming content or guarantee availability of titles.',
+      'Movie App does not host streaming content or guarantee availability of titles.',
     ],
   },
   {
@@ -33,7 +33,7 @@ const termsSections = [
   {
     title: 'Limitation of liability',
     details: [
-      'Tratics is provided as-is without warranties of any kind.',
+      'Movie App is provided as-is without warranties of any kind.',
       'We are not liable for indirect damages arising from use of the service.',
     ],
   },
@@ -41,7 +41,7 @@ const termsSections = [
 
 export default function TermsPage() {
   return (
-    <PageContainer title="Terms of Service" description="The rules for using Tratics.">
+    <PageContainer title="Terms of Service" description="The rules for using Movie App.">
       <div className="space-y-6">
         {termsSections.map(section => (
           <section

@@ -5,9 +5,9 @@ export class DocsController {
     const baseUrl = `${req.protocol}://${req.get('host')}`;
 
     res.status(200).json({
-      title: 'Tratics API Documentation',
+      title: 'Movie App API Documentation',
       version: '1.0.0',
-      description: 'RESTful API for Tratics movie tracking application',
+      description: 'RESTful API for Movie App movie tracking application',
       baseUrl,
       endpoints: {
         auth: `${baseUrl}/docs/auth`,

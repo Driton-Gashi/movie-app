@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Tratics API Server",
+  "description": "Movie App API Server",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon",

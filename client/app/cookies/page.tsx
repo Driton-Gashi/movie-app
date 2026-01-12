@@ -5,7 +5,7 @@ const cookieSections = [
   {
     title: 'Essential cookies',
     description:
-      'Used to keep you signed in and to secure requests to the Tratics API. These cookies are required for account features.',
+      'Used to keep you signed in and to secure requests to the Movie App API. These cookies are required for account features.',
   },
   {
     title: 'Preference cookies',
@@ -15,13 +15,13 @@ const cookieSections = [
   {
     title: 'Analytics cookies',
     description:
-      'Tratics does not use advertising cookies. If analytics are introduced later, we will update this page.',
+      'Movie App does not use advertising cookies. If analytics are introduced later, we will update this page.',
   },
 ];
 
 export default function CookiesPage() {
   return (
-    <PageContainer title="Cookie Settings" description="Details on how cookies are used on Tratics.">
+    <PageContainer title="Cookie Settings" description="Details on how cookies are used on Movie App.">
       <div className="space-y-6">
         {cookieSections.map(section => (
           <section

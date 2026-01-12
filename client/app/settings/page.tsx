@@ -4,7 +4,7 @@ import PageContainer from '@/components/PageContainer';
 const settingsSections = [
   {
     title: 'Account',
-    description: 'Your profile details are synced from the Tratics API.',
+    description: 'Your profile details are synced from the Movie App API.',
     items: [
       {
         label: 'Profile overview',
@@ -74,7 +74,7 @@ const settingsSections = [
       },
       {
         label: 'Terms of service',
-        detail: 'Rules for using Tratics.',
+        detail: 'Rules for using Movie App.',
         href: '/terms',
         action: 'Read terms',
       },

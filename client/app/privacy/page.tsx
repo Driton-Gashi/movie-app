@@ -37,7 +37,7 @@ const privacySections = [
 
 export default function PrivacyPage() {
   return (
-    <PageContainer title="Privacy Policy" description="How Tratics handles your data.">
+    <PageContainer title="Privacy Policy" description="How Movie App handles your data.">
       <div className="space-y-6">
         {privacySections.map(section => (
           <section

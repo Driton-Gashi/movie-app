@@ -126,7 +126,7 @@ export default async function HomePage() {
         <section className="relative -mx-4 overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 sm:mx-0">
           <div className="px-4 py-16 text-center sm:px-8 sm:py-24">
             <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-              Welcome to Tratics
+              Welcome to Movie App
             </h1>
             <p className="mt-4 text-lg text-white/80">Discover movies and series from WordPress</p>
           </div>

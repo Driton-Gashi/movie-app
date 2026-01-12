@@ -137,7 +137,7 @@ app.get('/', (_req, res) => {
 
   res.status(200).json({
     success: true,
-    message: 'Welcome to the Tratics API',
+    message: 'Welcome to the Movie App API',
     version: '1.0.0',
     documentation: `${baseUrl}/docs`,
     health: `${baseUrl}/health`,

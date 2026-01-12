@@ -78,7 +78,7 @@ export default function ContactPage() {
             Location and hours
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            Tratics is a remote team focused on building a fast movie and series catalog experience.
+            Movie App is a remote team focused on building a fast movie and series catalog experience.
           </p>
           <div className="mt-4 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-600 dark:border-white/5 dark:bg-slate-900/40 dark:text-slate-400">
             Support hours: Monday to Friday, 9:00 AM to 6:00 PM CET.

@@ -5,7 +5,7 @@ const faqs = [
   {
     question: 'Where does the catalog data come from?',
     answer:
-      'Movies, series, episodes, and genres are pulled from the WordPress catalog API used across Tratics.',
+      'Movies, series, episodes, and genres are pulled from the WordPress catalog API used across Movie App.',
   },
   {
     question: 'How do watchlists and favorites work?',
@@ -36,7 +36,7 @@ const faqs = [
 
 export default function FaqPage() {
   return (
-    <PageContainer title="FAQ" description="Answers to common questions about Tratics.">
+    <PageContainer title="FAQ" description="Answers to common questions about Movie App.">
       <div className="space-y-4">
         {faqs.map(faq => (
           <section

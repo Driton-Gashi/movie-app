@@ -1,8 +1,8 @@
 {
-  "name": "tratics",
+  "name": "movie-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Tratics - Full-stack application",
+  "description": "Movie App - Full-stack application",
   "workspaces": [
     "client",
     "server"

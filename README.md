@@ -1,4 +1,4 @@
-# Tratics
+# Movie App
 
 Full-stack movie and series tracking app built with a Next.js (App Router) frontend, an Express + TypeScript API, and a MySQL database. Content (movies/series/episodes/genres) is sourced from a headless WordPress instance, while user data (auth, watchlist, favorites) lives in MySQL.
 
