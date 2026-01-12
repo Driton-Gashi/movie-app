@@ -49,6 +49,7 @@ async function apiRequest<T>(
     ...options,
     credentials: 'include',
     headers,
+    ...(options?.cookies ? { cache: 'no-store' } : null),
   });
 
   return response.json();

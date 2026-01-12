@@ -70,6 +70,7 @@ async function adminRequest<T>(
     ...options,
     credentials: 'include',
     headers,
+    ...(options?.cookies ? { cache: 'no-store' } : null),
   });
 
   return response.json();
