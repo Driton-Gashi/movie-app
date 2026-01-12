@@ -1,32 +1,65 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PageContainer from '@/components/PageContainer';
-import { adminApi } from '@/src/lib/admin-api';
-import { meApi } from '@/src/lib/api';
+import { adminApi, type DashboardStats } from '@/src/lib/admin-api';
+import { useAuth } from '@/src/contexts/AuthProvider';
 
-export default async function AdminDashboardPage() {
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore
-    .getAll()
-    .map(cookie => `${cookie.name}=${cookie.value}`)
-    .join('; ');
+export default function AdminDashboardPage() {
+  const router = useRouter();
+  const { isAuthenticated, isAdmin, isLoading: isAuthLoading } = useAuth();
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Check if user is authenticated and is admin
-  try {
-    await meApi.getProfile(cookieHeader);
-  } catch (error) {
-    redirect('/login');
-  }
+  useEffect(() => {
+    if (isAuthLoading) return;
+    if (!isAuthenticated) {
+      router.replace('/login');
+      return;
+    }
+    if (!isAdmin) {
+      router.replace('/');
+      return;
+    }
 
-  // Check role - if not admin, redirect
-  // Note: We need to check role from the auth endpoint, not me endpoint
-  // For now, we'll check via the admin API which will return 403 if not admin
-  let stats;
-  try {
-    stats = await adminApi.getDashboard(cookieHeader);
-  } catch (error) {
-    redirect('/');
+    let isMounted = true;
+
+    const loadDashboard = async () => {
+      setIsLoading(true);
+      try {
+        const data = await adminApi.getDashboard();
+        if (!isMounted) return;
+        setStats(data);
+      } catch (error) {
+        if (isMounted) {
+          router.replace('/');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadDashboard();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAdmin, isAuthenticated, isAuthLoading, router]);
+
+  if (isAuthLoading || isLoading || !stats) {
+    return (
+      <PageContainer title="Admin Dashboard" description="Platform statistics and management">
+        <div className="rounded-2xl border border-black/10 bg-white p-6 text-center dark:border-white/10 dark:bg-slate-800">
+          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            Loading dashboard...
+          </div>
+        </div>
+      </PageContainer>
+    );
   }
 
   return (
